@@ -13,308 +13,71 @@
 <title>Clapham Junction — Where Next?</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600&display=swap');
-
   :root {
-    --bg: #0a0c0f;
-    --board: #0f1318;
-    --amber: #f5a623;
-    --amber-dim: #7a5312;
-    --green: #2ecc71;
-    --blue: #3498db;
-    --purple: #9b59b6;
-    --text: #c8cdd6;
-    --muted: #4a5060;
-    --border: #1e2530;
-    --row-hover: #141921;
-    --mono: 'Share Tech Mono', monospace;
-    --sans: 'Inter', sans-serif;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bot: env(safe-area-inset-bottom, 0px);
+    --bg:#0a0c0f;--board:#0f1318;--amber:#f5a623;--amber-dim:#7a5312;
+    --green:#2ecc71;--blue:#3498db;--purple:#9b59b6;
+    --text:#c8cdd6;--muted:#4a5060;--border:#1e2530;--row-hover:#141921;
+    --mono:'Share Tech Mono',monospace;--sans:'Inter',sans-serif;
+    --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
   }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    height: 100%;
-    overscroll-behavior: none;
-  }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    padding-top: var(--safe-top);
-    padding-bottom: var(--safe-bot);
-  }
-
-  /* ── HEADER ── */
-  header {
-    flex-shrink: 0;
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .station-name {
-    font-family: var(--mono);
-    font-size: clamp(18px, 5vw, 28px);
-    color: var(--amber);
-    letter-spacing: 0.04em;
-    line-height: 1;
-  }
-
-  .station-sub {
-    font-size: 10px;
-    color: var(--muted);
-    font-family: var(--mono);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 3px;
-  }
-
-  .live-clock {
-    font-family: var(--mono);
-    font-size: 22px;
-    color: var(--amber);
-    margin-left: auto;
-    letter-spacing: 0.08em;
-  }
-
-  /* ── CONTROLS ── */
-  .controls {
-    flex-shrink: 0;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .filter-btn {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    padding: 7px 11px;
-    border-radius: 4px;
-    border: 1px solid var(--muted);
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    text-transform: uppercase;
-    touch-action: manipulation;
-    min-height: 36px;
-  }
-
-  .filter-btn.active { color: var(--bg); border-color: transparent; }
-  .filter-btn[data-op="all"].active    { background: var(--amber); }
-  .filter-btn[data-op="SWR"].active    { background: var(--green); }
-  .filter-btn[data-op="Southern"].active { background: var(--blue); }
-  .filter-btn[data-op="Overground"].active { background: var(--purple); }
-
-  .spin-btn {
-    margin-left: auto;
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    background: var(--amber);
-    color: var(--bg);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: opacity 0.15s;
-    touch-action: manipulation;
-    min-height: 36px;
-  }
-  .spin-btn:active { opacity: 0.7; }
-
-  .search-row {
-    flex-shrink: 0;
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .search-box {
-    font-family: var(--mono);
-    font-size: 14px;
-    background: var(--board);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 9px 14px;
-    border-radius: 4px;
-    width: 100%;
-    outline: none;
-    letter-spacing: 0.04em;
-  }
-  .search-box:focus { border-color: var(--amber-dim); }
-  .search-box::placeholder { color: var(--muted); }
-
-  /* ── PICK DISPLAY ── */
-  #pick-display {
-    display: none;
-    flex-shrink: 0;
-    margin: 10px 16px;
-    padding: 12px 14px;
-    background: var(--board);
-    border: 1px solid var(--amber-dim);
-    border-radius: 6px;
-    font-family: var(--mono);
-  }
-  #pick-display.visible { display: flex; align-items: center; gap: 12px; }
-  .pick-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-  .pick-dest  { font-size: clamp(18px, 5vw, 26px); color: var(--amber); letter-spacing: 0.04em; }
-  .pick-op    { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .pick-time  { font-size: 10px; margin-left: auto; color: var(--muted); text-align: right; white-space: nowrap; }
-
-  /* ── SCROLLABLE TABLE ── */
-  .board-wrap {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 16px 16px;
-  }
-
-  .count-line {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    padding: 8px 0 6px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 1;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--mono);
-  }
-
-  thead th {
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: left;
-    padding: 6px 8px 6px 0;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 26px;
-    background: var(--bg);
-    z-index: 1;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.08s;
-  }
-  tbody tr:active { background: var(--row-hover); }
-  tbody tr.highlighted { background: #1c1700; }
-
-  td {
-    padding: 11px 8px 11px 0;
-    font-size: 14px;
-    vertical-align: middle;
-  }
-  td:first-child { padding-left: 4px; }
-
-  .dest-name { color: #e8eaf0; font-size: 15px; }
-
-  .op-badge {
-    display: inline-block;
-    font-size: 9px;
-    padding: 2px 6px;
-    border-radius: 2px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .op-SWR        { background: #0d3320; color: var(--green); }
-  .op-Southern   { background: #0b2240; color: var(--blue); }
-  .op-Overground { background: #1e1040; color: var(--purple); }
-
-  .region-tag { font-size: 10px; color: var(--muted); }
-
-  .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    margin-right: 7px;
-    vertical-align: middle;
-    flex-shrink: 0;
-  }
-  .dot-SWR        { background: var(--green); }
-  .dot-Southern   { background: var(--blue); }
-  .dot-Overground { background: var(--purple); }
-
-  #no-results {
-    display: none;
-    font-family: var(--mono);
-    color: var(--muted);
-    padding: 40px 0;
-    text-align: center;
-    font-size: 13px;
-    letter-spacing: 0.06em;
-  }
-
-  /* install banner */
-  #install-banner {
-    display: none;
-    flex-shrink: 0;
-    background: #1a1200;
-    border-bottom: 1px solid var(--amber-dim);
-    padding: 10px 16px;
-    font-size: 12px;
-    font-family: var(--mono);
-    color: var(--amber);
-    align-items: center;
-    gap: 12px;
-  }
-  #install-banner.show { display: flex; }
-  #install-btn {
-    margin-left: auto;
-    background: var(--amber);
-    color: var(--bg);
-    border: none;
-    padding: 5px 12px;
-    border-radius: 3px;
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
-    letter-spacing: 0.06em;
-    touch-action: manipulation;
-  }
-  #dismiss-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 18px;
-    cursor: pointer;
-    padding: 0 4px;
-    line-height: 1;
-  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overscroll-behavior:none}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex;flex-direction:column;height:100dvh;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
+  header{flex-shrink:0;border-bottom:1px solid var(--border);padding:14px 16px 12px;display:flex;align-items:center;gap:12px}
+  .station-name{font-family:var(--mono);font-size:clamp(18px,5vw,28px);color:var(--amber);letter-spacing:.04em;line-height:1}
+  .station-sub{font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+  .live-clock{font-family:var(--mono);font-size:22px;color:var(--amber);margin-left:auto;letter-spacing:.08em}
+  .controls{flex-shrink:0;padding:10px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .filter-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:7px 11px;border-radius:4px;border:1px solid var(--muted);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;text-transform:uppercase;touch-action:manipulation;min-height:36px}
+  .filter-btn.active{color:var(--bg);border-color:transparent}
+  .filter-btn[data-op="all"].active{background:var(--amber)}
+  .filter-btn[data-op="SWR"].active{background:var(--green)}
+  .filter-btn[data-op="Southern"].active{background:var(--blue)}
+  .filter-btn[data-op="Overground"].active{background:var(--purple)}
+  .spin-btn{margin-left:auto;font-family:var(--mono);font-size:12px;letter-spacing:.08em;padding:8px 16px;background:var(--amber);color:var(--bg);border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;font-weight:bold;transition:opacity .15s;touch-action:manipulation;min-height:36px}
+  .spin-btn:active{opacity:.7}
+  .search-row{flex-shrink:0;padding:8px 16px;border-bottom:1px solid var(--border)}
+  .search-box{font-family:var(--mono);font-size:14px;background:var(--board);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:4px;width:100%;outline:none;letter-spacing:.04em}
+  .search-box:focus{border-color:var(--amber-dim)}
+  .search-box::placeholder{color:var(--muted)}
+  #pick-display{display:none;flex-shrink:0;margin:10px 16px;padding:12px 14px;background:var(--board);border:1px solid var(--amber-dim);border-radius:6px;font-family:var(--mono)}
+  #pick-display.visible{display:flex;align-items:center;gap:12px}
+  .pick-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .pick-dest{font-size:clamp(18px,5vw,26px);color:var(--amber);letter-spacing:.04em}
+  .pick-op{font-size:11px;color:var(--muted);margin-top:2px}
+  .pick-time{font-size:10px;margin-left:auto;color:var(--muted);text-align:right;white-space:nowrap}
+  .board-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px 16px}
+  .count-line{font-family:var(--mono);font-size:10px;color:var(--muted);padding:8px 0 6px;letter-spacing:.06em;text-transform:uppercase;position:sticky;top:0;background:var(--bg);z-index:1}
+  table{width:100%;border-collapse:collapse;font-family:var(--mono)}
+  thead th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px 6px 0;border-bottom:1px solid var(--border);position:sticky;top:26px;background:var(--bg);z-index:1}
+  tbody tr{border-bottom:1px solid var(--border);transition:background .08s}
+  tbody tr:active{background:var(--row-hover)}
+  tbody tr.highlighted{background:#1c1700}
+  td{padding:11px 8px 11px 0;font-size:14px;vertical-align:middle}
+  td:first-child{padding-left:4px}
+  .dest-name{color:#e8eaf0;font-size:15px}
+  .op-badge{display:inline-block;font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase}
+  .op-SWR{background:#0d3320;color:var(--green)}
+  .op-Southern{background:#0b2240;color:var(--blue)}
+  .op-Overground{background:#1e1040;color:var(--purple)}
+  .region-tag{font-size:10px;color:var(--muted)}
+  .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:7px;vertical-align:middle;flex-shrink:0}
+  .dot-SWR{background:var(--green)}
+  .dot-Southern{background:var(--blue)}
+  .dot-Overground{background:var(--purple)}
+  #no-results{display:none;font-family:var(--mono);color:var(--muted);padding:40px 0;text-align:center;font-size:13px;letter-spacing:.06em}
+  #install-banner{display:none;flex-shrink:0;background:#1a1200;border-bottom:1px solid var(--amber-dim);padding:10px 16px;font-size:12px;font-family:var(--mono);color:var(--amber);align-items:center;gap:12px}
+  #install-banner.show{display:flex}
+  #install-btn{margin-left:auto;background:var(--amber);color:var(--bg);border:none;padding:5px 12px;border-radius:3px;font-family:var(--mono);font-size:11px;font-weight:bold;cursor:pointer;letter-spacing:.06em;touch-action:manipulation}
+  #dismiss-btn{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
 </style>
 </head>
 <body>
-
 <div id="install-banner">
-  <span>📲 Add to Home Screen for the full app experience</span>
+  <span>📲 Add to Home Screen for the full app</span>
   <button id="install-btn">Install</button>
   <button id="dismiss-btn">×</button>
 </div>
-
 <header>
   <div>
     <div class="station-sub">London — Departure Board</div>
@@ -322,7 +85,6 @@
   </div>
   <div class="live-clock" id="clock">00:00:00</div>
 </header>
-
 <div class="controls">
   <button class="filter-btn active" data-op="all">All</button>
   <button class="filter-btn" data-op="SWR">SWR</button>
@@ -330,292 +92,279 @@
   <button class="filter-btn" data-op="Overground">Overground</button>
   <button class="spin-btn" id="spin-btn">🎲 Pick one</button>
 </div>
-
 <div class="search-row">
   <input class="search-box" type="search" id="search" placeholder="Search destination or region…" autocomplete="off" autocorrect="off" spellcheck="false">
 </div>
-
 <div id="pick-display">
   <div>
     <div class="pick-label">Your next adventure</div>
     <div class="pick-dest" id="pick-dest">—</div>
-    <div class="pick-op"   id="pick-op">—</div>
+    <div class="pick-op" id="pick-op">—</div>
   </div>
   <div class="pick-time" id="pick-time"></div>
 </div>
-
 <div class="board-wrap">
   <div class="count-line" id="count-line"></div>
   <table>
-    <thead>
-      <tr>
-        <th style="width:45%">Destination</th>
-        <th style="width:22%">Operator</th>
-        <th style="width:33%">Region</th>
-      </tr>
-    </thead>
+    <thead><tr>
+      <th style="width:45%">Destination</th>
+      <th style="width:22%">Operator</th>
+      <th style="width:33%">Region</th>
+    </tr></thead>
     <tbody id="tbody"></tbody>
   </table>
   <div id="no-results">No destinations match</div>
 </div>
-
 <script>
 const DESTINATIONS = [
-  // SWR — South West Main Line & branches
-  { name: "Woking",               op: "SWR",        region: "Surrey — mainline express" },
-  { name: "Guildford",            op: "SWR",        region: "Surrey" },
-  { name: "Basingstoke",          op: "SWR",        region: "Hampshire — mainline" },
-  { name: "Winchester",           op: "SWR",        region: "Hampshire" },
-  { name: "Southampton Central",  op: "SWR",        region: "Hampshire — mainline" },
-  { name: "Southampton Airport Parkway", op:"SWR",  region: "Hampshire" },
-  { name: "Eastleigh",            op: "SWR",        region: "Hampshire" },
-  { name: "Fareham",              op: "SWR",        region: "Hampshire" },
-  { name: "Portsmouth & Southsea",op: "SWR",        region: "Hampshire — coast" },
-  { name: "Portsmouth Harbour",   op: "SWR",        region: "Hampshire — coast" },
-  { name: "Bournemouth",          op: "SWR",        region: "Dorset — mainline" },
-  { name: "Poole",                op: "SWR",        region: "Dorset" },
-  { name: "Weymouth",             op: "SWR",        region: "Dorset — end of line" },
-  { name: "Salisbury",            op: "SWR",        region: "Wiltshire" },
-  { name: "Exeter St Davids",     op: "SWR",        region: "Devon — long-distance" },
-  { name: "Yeovil Junction",      op: "SWR",        region: "Somerset" },
-  { name: "Axminster",            op: "SWR",        region: "Devon" },
-  { name: "Honiton",              op: "SWR",        region: "Devon" },
-  { name: "Reading",              op: "SWR",        region: "Berkshire — via Richmond" },
-  { name: "Staines",              op: "SWR",        region: "Surrey — via Richmond" },
-  { name: "Windsor & Eton Riverside", op: "SWR",   region: "Berkshire — branch" },
-  { name: "Weybridge",            op: "SWR",        region: "Surrey" },
-  { name: "Walton-on-Thames",     op: "SWR",        region: "Surrey" },
-  { name: "Surbiton",             op: "SWR",        region: "Surrey" },
-  { name: "Kingston",             op: "SWR",        region: "Surrey — loop" },
-  { name: "Richmond",             op: "SWR",        region: "SW London" },
-  { name: "Twickenham",           op: "SWR",        region: "SW London" },
-  { name: "Hampton Court",        op: "SWR",        region: "Surrey — branch" },
-  { name: "Shepperton",           op: "SWR",        region: "Surrey — branch" },
-  { name: "Chessington South",    op: "SWR",        region: "Surrey — branch" },
-  { name: "Epsom",                op: "SWR",        region: "Surrey" },
-  { name: "Leatherhead",          op: "SWR",        region: "Surrey" },
-  { name: "Dorking",              op: "SWR",        region: "Surrey" },
-  { name: "New Malden",           op: "SWR",        region: "SW London" },
-  { name: "Raynes Park",          op: "SWR",        region: "SW London" },
-  { name: "Wimbledon",            op: "SWR",        region: "SW London" },
-  { name: "Putney",               op: "SWR",        region: "SW London" },
-  { name: "Wandsworth Town",      op: "SWR",        region: "SW London" },
-  { name: "Vauxhall",             op: "SWR",        region: "London — inner" },
-  { name: "London Waterloo",      op: "SWR",        region: "London terminus" },
-  { name: "Alton",                op: "SWR",        region: "Hampshire — branch" },
-  { name: "Farnham",              op: "SWR",        region: "Surrey" },
-  { name: "Aldershot",            op: "SWR",        region: "Hampshire" },
-  { name: "Fleet",                op: "SWR",        region: "Hampshire" },
-  { name: "Farnborough",          op: "SWR",        region: "Hampshire" },
-  { name: "Ascot",                op: "SWR",        region: "Berkshire" },
-  { name: "Bracknell",            op: "SWR",        region: "Berkshire" },
-  { name: "Brentford",            op: "SWR",        region: "West London — loop" },
-  { name: "Feltham",              op: "SWR",        region: "Middlesex" },
-  { name: "Hounslow",             op: "SWR",        region: "Middlesex" },
-  { name: "Isleworth",            op: "SWR",        region: "Middlesex" },
-  { name: "Whitton",              op: "SWR",        region: "Middlesex" },
-  { name: "Mortlake",             op: "SWR",        region: "SW London" },
-  { name: "Barnes",               op: "SWR",        region: "SW London" },
-  { name: "Barnes Bridge",        op: "SWR",        region: "SW London" },
-  { name: "Strawberry Hill",      op: "SWR",        region: "SW London" },
-  { name: "Teddington",           op: "SWR",        region: "SW London" },
-  { name: "Norbiton",             op: "SWR",        region: "Surrey" },
+  // ── SWR: South West Main Line ──
+  {name:"London Waterloo",        op:"SWR", region:"London terminus"},
+  {name:"Vauxhall",               op:"SWR", region:"London — inner"},
+  {name:"Wandsworth Town",        op:"SWR", region:"SW London"},
+  {name:"Putney",                 op:"SWR", region:"SW London"},
+  {name:"Wimbledon",              op:"SWR", region:"SW London"},
+  {name:"Raynes Park",            op:"SWR", region:"SW London"},
+  {name:"New Malden",             op:"SWR", region:"SW London"},
+  {name:"Surbiton",               op:"SWR", region:"Surrey"},
+  {name:"Woking",                 op:"SWR", region:"Surrey — mainline express"},
+  {name:"Basingstoke",            op:"SWR", region:"Hampshire — mainline"},
+  {name:"Winchester",             op:"SWR", region:"Hampshire"},
+  {name:"Southampton Central",    op:"SWR", region:"Hampshire — mainline"},
+  {name:"Southampton Airport Parkway",op:"SWR",region:"Hampshire"},
+  {name:"Eastleigh",              op:"SWR", region:"Hampshire"},
+  {name:"Fareham",                op:"SWR", region:"Hampshire"},
+  {name:"Portsmouth & Southsea",  op:"SWR", region:"Hampshire — coast"},
+  {name:"Portsmouth Harbour",     op:"SWR", region:"Hampshire — coast"},
+  {name:"Bournemouth",            op:"SWR", region:"Dorset — mainline"},
+  {name:"Poole",                  op:"SWR", region:"Dorset"},
+  {name:"Weymouth",               op:"SWR", region:"Dorset — end of line"},
+  {name:"Salisbury",              op:"SWR", region:"Wiltshire"},
+  {name:"Exeter St Davids",       op:"SWR", region:"Devon — long-distance"},
+  {name:"Yeovil Junction",        op:"SWR", region:"Somerset"},
+  {name:"Axminster",              op:"SWR", region:"Devon"},
+  {name:"Honiton",                op:"SWR", region:"Devon"},
+  // SWR: Kingston & Richmond loops
+  {name:"Richmond",               op:"SWR", region:"SW London"},
+  {name:"Twickenham",             op:"SWR", region:"SW London"},
+  {name:"Kingston",               op:"SWR", region:"Surrey — loop"},
+  {name:"Norbiton",               op:"SWR", region:"Surrey"},
+  {name:"Strawberry Hill",        op:"SWR", region:"SW London"},
+  {name:"Teddington",             op:"SWR", region:"SW London"},
+  {name:"Hampton Court",          op:"SWR", region:"Surrey — branch"},
+  // SWR: Reading via Richmond
+  {name:"Reading",                op:"SWR", region:"Berkshire — via Richmond"},
+  {name:"Staines",                op:"SWR", region:"Surrey — via Richmond"},
+  {name:"Windsor & Eton Riverside",op:"SWR",region:"Berkshire — branch"},
+  // SWR: Weybridge / Walton / Epsom
+  {name:"Weybridge",              op:"SWR", region:"Surrey"},
+  {name:"Walton-on-Thames",       op:"SWR", region:"Surrey"},
+  {name:"Epsom",                  op:"SWR", region:"Surrey"},
+  {name:"Leatherhead",            op:"SWR", region:"Surrey"},
+  {name:"Dorking",                op:"SWR", region:"Surrey"},
+  // SWR: Shepperton & Chessington branches
+  {name:"Shepperton",             op:"SWR", region:"Surrey — branch"},
+  {name:"Chessington South",      op:"SWR", region:"Surrey — branch"},
+  // SWR: Alton / Farnham / Guildford
+  {name:"Guildford",              op:"SWR", region:"Surrey"},
+  {name:"Alton",                  op:"SWR", region:"Hampshire — branch"},
+  {name:"Farnham",                op:"SWR", region:"Surrey"},
+  {name:"Aldershot",              op:"SWR", region:"Hampshire"},
+  {name:"Fleet",                  op:"SWR", region:"Hampshire"},
+  {name:"Farnborough",            op:"SWR", region:"Hampshire"},
+  // SWR: Ascot / Bracknell
+  {name:"Ascot",                  op:"SWR", region:"Berkshire"},
+  {name:"Bracknell",              op:"SWR", region:"Berkshire"},
+  // SWR: Hounslow loop / Brentford
+  {name:"Brentford",              op:"SWR", region:"West London — loop"},
+  {name:"Isleworth",              op:"SWR", region:"Middlesex"},
+  {name:"Hounslow",               op:"SWR", region:"Middlesex"},
+  {name:"Feltham",                op:"SWR", region:"Middlesex"},
+  {name:"Whitton",                op:"SWR", region:"Middlesex"},
+  // SWR: Barnes loop
+  {name:"Mortlake",               op:"SWR", region:"SW London"},
+  {name:"Barnes",                 op:"SWR", region:"SW London"},
+  {name:"Barnes Bridge",          op:"SWR", region:"SW London"},
 
-  // Southern — Brighton Main Line & branches
-  { name: "London Victoria",      op: "Southern",   region: "London terminus" },
-  { name: "Gatwick Airport",      op: "Southern",   region: "Sussex — airport express" },
-  { name: "Brighton",             op: "Southern",   region: "East Sussex — coast" },
-  { name: "East Croydon",         op: "Southern",   region: "South London" },
-  { name: "Balham",               op: "Southern",   region: "South London" },
-  { name: "Streatham Common",     op: "Southern",   region: "South London" },
-  { name: "Norbury",              op: "Southern",   region: "South London" },
-  { name: "Thornton Heath",       op: "Southern",   region: "South London" },
-  { name: "Selhurst",             op: "Southern",   region: "South London" },
-  { name: "Haywards Heath",       op: "Southern",   region: "West Sussex" },
-  { name: "Burgess Hill",         op: "Southern",   region: "West Sussex" },
-  { name: "Hassocks",             op: "Southern",   region: "West Sussex" },
-  { name: "Preston Park",         op: "Southern",   region: "East Sussex" },
-  { name: "Hove",                 op: "Southern",   region: "East Sussex — coast" },
-  { name: "Littlehampton",        op: "Southern",   region: "West Sussex — coast" },
-  { name: "Worthing",             op: "Southern",   region: "West Sussex — coast" },
-  { name: "Shoreham-by-Sea",      op: "Southern",   region: "West Sussex" },
-  { name: "Lancing",              op: "Southern",   region: "West Sussex" },
-  { name: "Chichester",           op: "Southern",   region: "West Sussex" },
-  { name: "Barnham",              op: "Southern",   region: "West Sussex" },
-  { name: "Ford",                 op: "Southern",   region: "West Sussex" },
-  { name: "Arundel",              op: "Southern",   region: "West Sussex" },
-  { name: "Bognor Regis",         op: "Southern",   region: "West Sussex — coast" },
-  { name: "Three Bridges",        op: "Southern",   region: "West Sussex" },
-  { name: "Crawley",              op: "Southern",   region: "West Sussex" },
-  { name: "Horsham",              op: "Southern",   region: "West Sussex" },
-  { name: "Redhill",              op: "Southern",   region: "Surrey" },
-  { name: "Reigate",              op: "Southern",   region: "Surrey" },
-  { name: "Dorking (Southern)",   op: "Southern",   region: "Surrey — via Redhill" },
-  { name: "Lewes",                op: "Southern",   region: "East Sussex" },
-  { name: "Eastbourne",           op: "Southern",   region: "East Sussex — coast" },
-  { name: "Seaford",              op: "Southern",   region: "East Sussex — coast" },
-  { name: "Newhaven",             op: "Southern",   region: "East Sussex" },
-  { name: "Plumpton",             op: "Southern",   region: "East Sussex" },
-  { name: "Falmer",               op: "Southern",   region: "East Sussex — university" },
-  { name: "London Bridge",        op: "Southern",   region: "London terminus" },
-  { name: "Crystal Palace",       op: "Southern",   region: "South London" },
-  { name: "Gipsy Hill",           op: "Southern",   region: "South London" },
-  { name: "West Norwood",         op: "Southern",   region: "South London" },
-  { name: "Streatham Hill",       op: "Southern",   region: "South London" },
-  { name: "Tulse Hill",           op: "Southern",   region: "South London" },
-  { name: "West Croydon",         op: "Southern",   region: "South London" },
-  { name: "Purley",               op: "Southern",   region: "South London" },
-  { name: "Coulsdon South",       op: "Southern",   region: "Surrey" },
-  { name: "Merstham",             op: "Southern",   region: "Surrey" },
-  { name: "Purley Oaks",          op: "Southern",   region: "South London" },
-  { name: "Kensington Olympia",   op: "Southern",   region: "West London Line" },
-  { name: "Watford Junction",     op: "Southern",   region: "Hertfordshire — West London Line" },
-  { name: "Wembley Central",      op: "Southern",   region: "West London Line" },
-  { name: "Shepherd's Bush",      op: "Southern",   region: "West London Line" },
+  // ── Southern: Brighton Main Line ──
+  {name:"London Victoria",        op:"Southern", region:"London terminus"},
+  {name:"London Bridge",          op:"Southern", region:"London terminus"},
+  {name:"Balham",                 op:"Southern", region:"South London"},
+  {name:"Streatham Common",       op:"Southern", region:"South London"},
+  {name:"Norbury",                op:"Southern", region:"South London"},
+  {name:"Thornton Heath",         op:"Southern", region:"South London"},
+  {name:"Selhurst",               op:"Southern", region:"South London"},
+  {name:"East Croydon",           op:"Southern", region:"South London"},
+  {name:"Gatwick Airport",        op:"Southern", region:"Sussex — airport express"},
+  {name:"Three Bridges",          op:"Southern", region:"West Sussex"},
+  {name:"Crawley",                op:"Southern", region:"West Sussex"},
+  {name:"Balcombe",               op:"Southern", region:"West Sussex"},
+  {name:"Haywards Heath",         op:"Southern", region:"West Sussex"},
+  {name:"Wivelsfield",            op:"Southern", region:"West Sussex"},
+  {name:"Burgess Hill",           op:"Southern", region:"West Sussex"},
+  {name:"Hassocks",               op:"Southern", region:"West Sussex"},
+  {name:"Preston Park",           op:"Southern", region:"East Sussex"},
+  {name:"Brighton",               op:"Southern", region:"East Sussex — coast"},
+  // Southern: East Coastway to Ore & Hastings
+  {name:"Falmer",                 op:"Southern", region:"East Sussex — university"},
+  {name:"Lewes",                  op:"Southern", region:"East Sussex"},
+  {name:"Glynde",                 op:"Southern", region:"East Sussex"},
+  {name:"Berwick",                op:"Southern", region:"East Sussex"},
+  {name:"Polegate",               op:"Southern", region:"East Sussex"},
+  {name:"Hampden Park",           op:"Southern", region:"East Sussex"},
+  {name:"Eastbourne",             op:"Southern", region:"East Sussex — coast"},
+  {name:"Pevensey & Westham",     op:"Southern", region:"East Sussex — coast"},
+  {name:"Pevensey Bay",           op:"Southern", region:"East Sussex — coast"},
+  {name:"Normans Bay",            op:"Southern", region:"East Sussex — coast"},
+  {name:"Cooden Beach",           op:"Southern", region:"East Sussex — coast"},
+  {name:"Collington",             op:"Southern", region:"East Sussex"},
+  {name:"Bexhill",                op:"Southern", region:"East Sussex — coast"},
+  {name:"St Leonards Warrior Square", op:"Southern", region:"East Sussex"},
+  {name:"Hastings",               op:"Southern", region:"East Sussex — coast"},
+  {name:"Ore",                    op:"Southern", region:"East Sussex — end of line"},
+  // Southern: Seaford branch
+  {name:"Newhaven Town",          op:"Southern", region:"East Sussex"},
+  {name:"Newhaven Harbour",       op:"Southern", region:"East Sussex"},
+  {name:"Bishopstone",            op:"Southern", region:"East Sussex"},
+  {name:"Seaford",                op:"Southern", region:"East Sussex — coast"},
+  {name:"Southease",              op:"Southern", region:"East Sussex"},
+  {name:"Plumpton",               op:"Southern", region:"East Sussex"},
+  {name:"Cooksbridge",            op:"Southern", region:"East Sussex"},
+  // Southern: Brighton coast west / Littlehampton / Bognor
+  {name:"Hove",                   op:"Southern", region:"East Sussex — coast"},
+  {name:"Aldrington",             op:"Southern", region:"West Sussex"},
+  {name:"Portslade",              op:"Southern", region:"West Sussex"},
+  {name:"Fishersgate",            op:"Southern", region:"West Sussex"},
+  {name:"Southwick",              op:"Southern", region:"West Sussex"},
+  {name:"Shoreham-by-Sea",        op:"Southern", region:"West Sussex"},
+  {name:"Lancing",                op:"Southern", region:"West Sussex"},
+  {name:"East Worthing",          op:"Southern", region:"West Sussex"},
+  {name:"Worthing",               op:"Southern", region:"West Sussex — coast"},
+  {name:"Durrington-on-Sea",      op:"Southern", region:"West Sussex"},
+  {name:"Goring-by-Sea",          op:"Southern", region:"West Sussex"},
+  {name:"Angmering",              op:"Southern", region:"West Sussex"},
+  {name:"Ford",                   op:"Southern", region:"West Sussex"},
+  {name:"Arundel",                op:"Southern", region:"West Sussex"},
+  {name:"Barnham",                op:"Southern", region:"West Sussex"},
+  {name:"Bognor Regis",           op:"Southern", region:"West Sussex — coast"},
+  {name:"Littlehampton",          op:"Southern", region:"West Sussex — coast"},
+  {name:"Chichester",             op:"Southern", region:"West Sussex"},
+  {name:"Bosham",                 op:"Southern", region:"West Sussex"},
+  {name:"Fishbourne",             op:"Southern", region:"West Sussex"},
+  // Southern: Horsham / Redhill / Reigate
+  {name:"Horsham",                op:"Southern", region:"West Sussex"},
+  {name:"Christ's Hospital",      op:"Southern", region:"West Sussex"},
+  {name:"Billingshurst",          op:"Southern", region:"West Sussex"},
+  {name:"Pulborough",             op:"Southern", region:"West Sussex"},
+  {name:"Amberley",               op:"Southern", region:"West Sussex"},
+  {name:"Redhill",                op:"Southern", region:"Surrey"},
+  {name:"Reigate",                op:"Southern", region:"Surrey"},
+  {name:"Merstham",               op:"Southern", region:"Surrey"},
+  {name:"Coulsdon South",         op:"Southern", region:"Surrey"},
+  {name:"Purley Oaks",            op:"Southern", region:"South London"},
+  {name:"Purley",                 op:"Southern", region:"South London"},
+  {name:"West Croydon",           op:"Southern", region:"South London"},
+  // Southern: Crystal Palace / Streatham Hill / West London Line
+  {name:"Crystal Palace",         op:"Southern", region:"South London"},
+  {name:"Gipsy Hill",             op:"Southern", region:"South London"},
+  {name:"West Norwood",           op:"Southern", region:"South London"},
+  {name:"Streatham Hill",         op:"Southern", region:"South London"},
+  {name:"Tulse Hill",             op:"Southern", region:"South London"},
+  {name:"Kensington Olympia",     op:"Southern", region:"West London Line"},
+  {name:"Shepherd's Bush",        op:"Southern", region:"West London Line"},
+  {name:"Wembley Central",        op:"Southern", region:"West London Line"},
+  {name:"Watford Junction",       op:"Southern", region:"Hertfordshire — West London Line"},
+  // Southern: East Grinstead / Uckfield
+  {name:"East Grinstead",         op:"Southern", region:"West Sussex — branch"},
+  {name:"Uckfield",               op:"Southern", region:"East Sussex — branch"},
+  {name:"Crowborough",            op:"Southern", region:"East Sussex"},
+  {name:"Buxted",                 op:"Southern", region:"East Sussex"},
+  {name:"Eridge",                 op:"Southern", region:"East Sussex"},
+  // Southern: London Road / Moulsecoomb
+  {name:"London Road (Brighton)", op:"Southern", region:"East Sussex"},
+  {name:"Moulsecoomb",            op:"Southern", region:"East Sussex"},
 
-  // London Overground — Mildmay & Windrush lines
-  { name: "Stratford",            op: "Overground", region: "East London — Mildmay line" },
-  { name: "Dalston Junction",     op: "Overground", region: "East London — Windrush line" },
-  { name: "Peckham Rye",          op: "Overground", region: "South London — Windrush" },
-  { name: "Denmark Hill",         op: "Overground", region: "South London" },
-  { name: "Loughborough Junction",op: "Overground", region: "South London" },
-  { name: "Brixton",              op: "Overground", region: "South London — Windrush" },
-  { name: "Herne Hill",           op: "Overground", region: "South London" },
-  { name: "Wandsworth Road",      op: "Overground", region: "South London" },
-  { name: "Battersea Park",       op: "Overground", region: "SW London" },
-  { name: "Willesden Junction",   op: "Overground", region: "NW London — Mildmay" },
-  { name: "Shepherd's Bush (Overground)", op: "Overground", region: "West London — Mildmay" },
-  { name: "Acton Central",        op: "Overground", region: "West London — Mildmay" },
-  { name: "Kew Gardens",          op: "Overground", region: "SW London — Mildmay" },
-  { name: "Gunnersbury",          op: "Overground", region: "West London — Mildmay" },
-  { name: "South Acton",          op: "Overground", region: "West London — Mildmay" },
-  { name: "Highbury & Islington", op: "Overground", region: "North London — Mildmay" },
-  { name: "Hackney Central",      op: "Overground", region: "East London — Mildmay" },
-  { name: "Hackney Downs",        op: "Overground", region: "East London — Mildmay" },
-  { name: "Walthamstow Central",  op: "Overground", region: "East London — Mildmay" },
-  { name: "Canonbury",            op: "Overground", region: "North London — Mildmay" },
-  { name: "Caledonian Road & Barnsbury", op:"Overground", region: "North London — Mildmay" },
+  // ── London Overground: Windrush & Mildmay lines ──
+  {name:"Battersea Park",         op:"Overground", region:"SW London"},
+  {name:"Wandsworth Road",        op:"Overground", region:"South London"},
+  {name:"Herne Hill",             op:"Overground", region:"South London"},
+  {name:"Loughborough Junction",  op:"Overground", region:"South London"},
+  {name:"Denmark Hill",           op:"Overground", region:"South London"},
+  {name:"Peckham Rye",            op:"Overground", region:"South London — Windrush"},
+  {name:"Brixton",                op:"Overground", region:"South London — Windrush"},
+  {name:"Dalston Junction",       op:"Overground", region:"East London — Windrush"},
+  {name:"Highbury & Islington",   op:"Overground", region:"North London — Mildmay"},
+  {name:"Canonbury",              op:"Overground", region:"North London — Mildmay"},
+  {name:"Caledonian Road & Barnsbury",op:"Overground",region:"North London — Mildmay"},
+  {name:"Hackney Central",        op:"Overground", region:"East London — Mildmay"},
+  {name:"Hackney Downs",          op:"Overground", region:"East London — Mildmay"},
+  {name:"Stratford",              op:"Overground", region:"East London — Mildmay"},
+  {name:"Walthamstow Central",    op:"Overground", region:"East London — Mildmay"},
+  {name:"Willesden Junction",     op:"Overground", region:"NW London — Mildmay"},
+  {name:"Shepherd's Bush (Overground)",op:"Overground",region:"West London — Mildmay"},
+  {name:"Gunnersbury",            op:"Overground", region:"West London — Mildmay"},
+  {name:"Kew Gardens",            op:"Overground", region:"SW London — Mildmay"},
+  {name:"Acton Central",          op:"Overground", region:"West London — Mildmay"},
+  {name:"South Acton",            op:"Overground", region:"West London — Mildmay"},
 ];
 
-const seen = new Set();
-const DESTS = DESTINATIONS.filter(d => {
-  const k = d.name + d.op;
-  if (seen.has(k)) return false;
-  seen.add(k); return true;
-});
+const seen=new Set();
+const DESTS=DESTINATIONS.filter(d=>{const k=d.name+d.op;if(seen.has(k))return false;seen.add(k);return true});
+let currentFilter='all',currentSearch='',highlighted=null;
 
-let currentFilter = 'all';
-let currentSearch = '';
-let highlighted = null;
-
-function getFiltered() {
-  return DESTS.filter(d => {
-    const opOk = currentFilter === 'all' || d.op === currentFilter;
-    const q = currentSearch.toLowerCase();
-    const srchOk = !q || d.name.toLowerCase().includes(q) || d.region.toLowerCase().includes(q);
-    return opOk && srchOk;
+function getFiltered(){
+  return DESTS.filter(d=>{
+    const opOk=currentFilter==='all'||d.op===currentFilter;
+    const q=currentSearch.toLowerCase();
+    const srchOk=!q||d.name.toLowerCase().includes(q)||d.region.toLowerCase().includes(q);
+    return opOk&&srchOk;
   });
 }
-
-function render() {
-  const filtered = getFiltered();
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = '';
-  document.getElementById('count-line').textContent =
-    `${filtered.length} destination${filtered.length !== 1 ? 's' : ''}`;
-
-  const noRes = document.getElementById('no-results');
-  if (!filtered.length) { noRes.style.display = 'block'; return; }
-  noRes.style.display = 'none';
-
-  const frag = document.createDocumentFragment();
-  filtered.forEach(d => {
-    const tr = document.createElement('tr');
-    if (highlighted && highlighted.name === d.name && highlighted.op === d.op)
-      tr.classList.add('highlighted');
-    tr.innerHTML = `
-      <td class="dest-name"><span class="dot dot-${d.op}"></span>${d.name}</td>
-      <td><span class="op-badge op-${d.op}">${d.op}</span></td>
-      <td class="region-tag">${d.region}</td>`;
+function render(){
+  const filtered=getFiltered();
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML='';
+  document.getElementById('count-line').textContent=`${filtered.length} destination${filtered.length!==1?'s':''}`;
+  const noRes=document.getElementById('no-results');
+  if(!filtered.length){noRes.style.display='block';return}
+  noRes.style.display='none';
+  const frag=document.createDocumentFragment();
+  filtered.forEach(d=>{
+    const tr=document.createElement('tr');
+    if(highlighted&&highlighted.name===d.name&&highlighted.op===d.op)tr.classList.add('highlighted');
+    tr.innerHTML=`<td class="dest-name"><span class="dot dot-${d.op}"></span>${d.name}</td><td><span class="op-badge op-${d.op}">${d.op}</span></td><td class="region-tag">${d.region}</td>`;
     frag.appendChild(tr);
   });
   tbody.appendChild(frag);
 }
-
-// Clock
-function tick() {
-  document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString('en-GB', { hour12: false });
-}
-tick(); setInterval(tick, 1000);
-
-// Filters
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.op;
-    highlighted = null; hidePick(); render();
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{hour12:false})}
+tick();setInterval(tick,1000);
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');currentFilter=btn.dataset.op;highlighted=null;hidePick();render();
   });
 });
-
-// Search
-document.getElementById('search').addEventListener('input', e => {
-  currentSearch = e.target.value;
-  highlighted = null; hidePick(); render();
+document.getElementById('search').addEventListener('input',e=>{currentSearch=e.target.value;highlighted=null;hidePick();render()});
+document.getElementById('spin-btn').addEventListener('click',()=>{
+  const filtered=getFiltered();if(!filtered.length)return;
+  highlighted=filtered[Math.floor(Math.random()*filtered.length)];
+  showPick(highlighted);render();
+  setTimeout(()=>{const row=document.querySelector('#tbody tr.highlighted');if(row)row.scrollIntoView({behavior:'smooth',block:'center'})},60);
 });
-
-// Spin
-document.getElementById('spin-btn').addEventListener('click', () => {
-  const filtered = getFiltered();
-  if (!filtered.length) return;
-  highlighted = filtered[Math.floor(Math.random() * filtered.length)];
-  showPick(highlighted); render();
-  setTimeout(() => {
-    const row = document.querySelector('#tbody tr.highlighted');
-    if (row) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 60);
-});
-
-function showPick(d) {
-  document.getElementById('pick-dest').textContent = d.name;
-  document.getElementById('pick-op').textContent = `${d.op} · ${d.region}`;
-  const t = new Date();
-  t.setMinutes(t.getMinutes() + Math.floor(Math.random() * 18 + 3));
-  document.getElementById('pick-time').textContent =
-    `~${t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
+function showPick(d){
+  document.getElementById('pick-dest').textContent=d.name;
+  document.getElementById('pick-op').textContent=`${d.op} · ${d.region}`;
+  const t=new Date();t.setMinutes(t.getMinutes()+Math.floor(Math.random()*18+3));
+  document.getElementById('pick-time').textContent=`~${t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
   document.getElementById('pick-display').classList.add('visible');
 }
-function hidePick() {
-  document.getElementById('pick-display').classList.remove('visible');
-}
-
-// PWA install prompt
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('install-banner').classList.add('show');
-});
-document.getElementById('install-btn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  document.getElementById('install-banner').classList.remove('show');
-});
-document.getElementById('dismiss-btn').addEventListener('click', () => {
-  document.getElementById('install-banner').classList.remove('show');
-});
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-banner').classList.remove('show');
-});
-
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(console.warn);
-}
-
+function hidePick(){document.getElementById('pick-display').classList.remove('visible')}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install-banner').classList.add('show')});
+document.getElementById('install-btn').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('install-banner').classList.remove('show')});
+document.getElementById('dismiss-btn').addEventListener('click',()=>document.getElementById('install-banner').classList.remove('show'));
+window.addEventListener('appinstalled',()=>document.getElementById('install-banner').classList.remove('show'));
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(console.warn);
 render();
 </script>
 </body>
